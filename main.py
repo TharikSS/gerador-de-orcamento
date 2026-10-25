@@ -1,8 +1,11 @@
+import json
+import os
 from datetime import datetime
 
 from reportlab.pdfgen import canvas
 
 EMPRESA = "O.P.S"
+ARQUIVO_HISTORICO = "historico.json"
 
 def calcular_total(itens):
     total = 0
@@ -62,6 +65,15 @@ def pedir_numero(pergunta):
         except ValueError:
             print("Valor invalido. Use apenas números, como 2,5")
 
+def salvar_historico(registro):
+    historico = []
+    if os.path.exists(ARQUIVO_HISTORICO):
+        with open(ARQUIVO_HISTORICO, "r", encoding="utf-8") as  arquivo:
+            historico = json.load(arquivo)
+    historico.append(registro)
+    with open(ARQUIVO_HISTORICO, "w", encoding="utf-8") as  arquivo:
+        json.dump(historico, arquivo, ensure_ascii=False, indent=4)
+
 
 nome = input("nome do cliente: ").title()
 telefone = input("telefone: ")
@@ -86,4 +98,14 @@ mostrar_resumo(nome, telefone, itens, total, desconto, valor_desconto)
 agora = datetime.now()
 nome_arquivo = f"orcamento_{agora.strftime('%d-%m-%Y_%H-%M-%S')}.pdf"
 gerar_pdf(nome, telefone, itens, total, desconto, valor_desconto, nome_arquivo)
+registro = {
+    "nome": nome,
+    "telefone": telefone,
+    "itens": itens,
+    "subtotal": total,
+    "desconto_percentual": desconto,
+    "total_final": total - valor_desconto,
+    "arquivo": nome_arquivo,
+}
+salvar_historico(registro)
 print(f"PDF salvo como: {nome_arquivo}")
