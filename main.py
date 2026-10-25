@@ -2,7 +2,7 @@ from datetime import datetime
 
 from reportlab.pdfgen import canvas
 
-EMPRESA = " O.P.S"
+EMPRESA = "O.P.S"
 
 def calcular_total(itens):
     total = 0
@@ -44,13 +44,14 @@ def gerar_pdf(nome, telefone, itens, total, desconto, valor_desconto, arquivo):
         quantidade_texto = f"{item['quantidade']:g}".replace(".", ",")
         pdf.drawString(50, y, f"{quantidade_texto} x {item['descricao']} ... R$ {subtotal_texto}")
         y = y - 20  
-    pdf.drawString(50, y - 20, "_" * 40)
+    pdf.line(50, y - 15, 545, y - 15)   
     subtotal_texto = f"{total:.2f}".replace(".", ",")
     desconto_texto = f"{valor_desconto:.2f}".replace(".", ",")
     final_texto = f"{total - valor_desconto:.2f}".replace(".", ",")
     pdf.drawString(50, y - 50, f"Subtotal: R$ {subtotal_texto}")
     pdf.drawString(50, y - 70, f"Desconto ({desconto:g}%): R$ {desconto_texto}")
-    pdf.drawString(50, y - 90, f"Total: R$ {final_texto}")
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(50, y  - 90, f"Total: R$ {final_texto}")
     pdf.save()
 
 def pedir_numero(pergunta):
