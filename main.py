@@ -99,6 +99,7 @@ agora = datetime.now()
 nome_arquivo = f"orcamento_{agora.strftime('%d-%m-%Y_%H-%M-%S')}.pdf"
 gerar_pdf(nome, telefone, itens, total, desconto, valor_desconto, nome_arquivo)
 registro = {
+    "data": agora.strftime("%d/%m/%Y %H:%M:%S"),
     "nome": nome,
     "telefone": telefone,
     "itens": itens,
