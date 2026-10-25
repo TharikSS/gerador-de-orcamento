@@ -2,6 +2,7 @@ from datetime import datetime
 
 from reportlab.pdfgen import canvas
 
+EMPRESA = " O.P.S"
 
 def calcular_total(itens):
     total = 0
@@ -24,13 +25,17 @@ def mostrar_resumo(nome, telefone, itens, total, desconto, valor_desconto):
    desconto_texto = f"{valor_desconto:.2f}".replace(".", ",")
    final_texto = f"{total - valor_desconto:.2f}".replace(".", ",")
    print(f"Subtotal: R$ {subtotal_texto}")
-   print(f"Desconto: R$ ({desconto:g}%) R$ {desconto_texto}")
+   print(f"Desconto ({desconto:g}%): R$ {desconto_texto}")
    print(f"Total: R$ {final_texto}")
                                                 
    
 def gerar_pdf(nome, telefone, itens, total, desconto, valor_desconto, arquivo):
     pdf = canvas.Canvas(arquivo)
     y = 800
+    pdf.setFont("Helvetica-Bold", 18)
+    pdf.drawString(50, y, EMPRESA)
+    y = y - 25
+    pdf.setFont("Helvetica", 12)
     pdf.drawString(50, y, f"Orçamento para: {nome} - {telefone}")
     y = y - 30
     for item in itens:
@@ -44,7 +49,7 @@ def gerar_pdf(nome, telefone, itens, total, desconto, valor_desconto, arquivo):
     desconto_texto = f"{valor_desconto:.2f}".replace(".", ",")
     final_texto = f"{total - valor_desconto:.2f}".replace(".", ",")
     pdf.drawString(50, y - 50, f"Subtotal: R$ {subtotal_texto}")
-    pdf.drawString(50, y - 70, f"Desconto: R$ ({desconto:g}%) R$ {desconto_texto}")
+    pdf.drawString(50, y - 70, f"Desconto ({desconto:g}%): R$ {desconto_texto}")
     pdf.drawString(50, y - 90, f"Total: R$ {final_texto}")
     pdf.save()
 
